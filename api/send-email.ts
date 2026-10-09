@@ -23,12 +23,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       from: 'Acumen Agency <info@acumenagency.com>',
       to: ['info@acumenagency.com'],
       replyTo: email,
-      subject: `Novo contato pelo site — ${name}`,
+      subject: `New contact from Brazil — ${name}`,
       html: `
-        <h2>Novo contato pelo site</h2>
-        <p><strong>Nome:</strong> ${name}</p>
+        <h2>New contact from the Brazil website</h2>
+        <p><strong>Name:</strong> ${name}</p>
         <p><strong>E-mail:</strong> ${email}</p>
-        <p><strong>Mensagem:</strong></p>
+        <p><strong>Message:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
       `,
     });
