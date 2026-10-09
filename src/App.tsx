@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import {
   ArrowDown,
   ArrowRight,
@@ -145,6 +146,7 @@ function App() {
   }
 
   return (
+    <>
     <main className="site-shell">
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Acumen Agency início">
@@ -432,6 +434,8 @@ function App() {
         </div>
       </footer>
     </main>
+      <Analytics />
+    </>
   );
 }
 
