@@ -5,11 +5,11 @@ import {
   ArrowRight,
   ArrowUpRight,
   BarChart3,
-  Building2,
   Check,
   Globe2,
   Lightbulb,
   LineChart,
+  Loader2,
   Mail,
   MapPin,
   Menu,
@@ -102,12 +102,14 @@ function FAQItem({ item, isOpen, onToggle }: { item: { q: string; a: string }; i
   );
 }
 
+type SubmitState = 'idle' | 'sending' | 'success' | 'error';
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>('idle');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -115,9 +117,27 @@ function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const name = String(formData.get('name') || '');
+    const email = String(formData.get('email') || '');
+    const message = String(formData.get('message') || '');
+
+    setSubmitState('sending');
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error('Request failed');
+      setSubmitState('success');
+      form.reset();
+    } catch {
+      setSubmitState('error');
+    }
   }
 
   function closeMenu() {
@@ -359,7 +379,7 @@ function App() {
           </Reveal>
           <Reveal delay={150}>
             <form onSubmit={handleSubmit}>
-              {submitted ? (
+              {submitState === 'success' ? (
                 <div className="success-message">
                   <Check size={30} />
                   <h3>Recebemos sua mensagem.</h3>
@@ -367,10 +387,15 @@ function App() {
                 </div>
               ) : (
                 <>
-                  <label>Seu nome<input required type="text" placeholder="Como podemos chamar você?" /></label>
-                  <label>E-mail corporativo<input required type="email" placeholder="seu@email.com" /></label>
-                  <label>Como podemos ajudar? <textarea required placeholder="Conte sobre o seu projeto ou desafio..." rows={3} /></label>
-                  <button className="button button-gold" type="submit">Enviar mensagem <ArrowRight size={17} /></button>
+                  <label>Seu nome<input required name="name" type="text" placeholder="Como podemos chamar você?" /></label>
+                  <label>E-mail corporativo<input required name="email" type="email" placeholder="seu@email.com" /></label>
+                  <label>Como podemos ajudar? <textarea required name="message" placeholder="Conte sobre o seu projeto ou desafio..." rows={3} /></label>
+                  {submitState === 'error' && (
+                    <p style={{ color: '#a8442a', fontSize: 13, margin: 0 }}>Algo deu errado. Tente novamente ou envie diretamente para info@acumenagency.com</p>
+                  )}
+                  <button className="button button-gold" type="submit" disabled={submitState === 'sending'}>
+                    {submitState === 'sending' ? (<><Loader2 size={17} className="spin" /> Enviando...</>) : (<>Enviar mensagem <ArrowRight size={17} /></>)}
+                  </button>
                 </>
               )}
             </form>
