@@ -266,10 +266,12 @@ h1 i, h2 i { color: #c8a971; font-family: 'Playfair Display', serif; font-weight
   .main-nav { display: none; position: absolute; top: 72px; left: 0; width: 100%; padding: 25px; background: rgba(10,10,9,.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); flex-direction: column; align-items: stretch; gap: 22px; border-bottom: 1px solid rgba(255,255,255,.08); }
   .main-nav.is-open { display: flex; }
   .nav-cta { justify-content: center; }
-  .hero { min-height: 730px; }
-  .hero-content { margin-top: 40px; }
-  .hero-content h1 { font-size: clamp(48px, 15vw, 75px); }
-  .hero-copy { font-size: 15px; }
+  .hero { min-height: 640px; height: auto; padding: 120px 0 80px; max-height: none; }
+  .hero-content { margin-top: 20px; }
+  .hero-content .eyebrow { font-size: 8px; letter-spacing: 2px; gap: 8px; flex-wrap: wrap; }
+  .hero-content .eyebrow span { width: 28px; }
+  .hero-content h1 { font-size: clamp(38px, 11vw, 58px); margin: 22px 0 18px; letter-spacing: -1.5px; }
+  .hero-copy { font-size: 14px; line-height: 1.55; }
   .desktop-break { display: none; }
   .hero-actions { flex-direction: column; align-items: flex-start; gap: 22px; }
   .hero-note { left: 24px; bottom: 23px; }
