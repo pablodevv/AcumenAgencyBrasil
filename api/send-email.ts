@@ -20,15 +20,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     await resend.emails.send({
-      from: 'Acumen Agency <onboarding@resend.dev>',
+      from: 'Acumen Agency <info@acumenagency.com>',
       to: ['info@acumenagency.com'],
       replyTo: email,
-      subject: `New contact from Brazil — ${name}`,
+      subject: `Novo contato pelo site — ${name}`,
       html: `
-        <h2>New contact from the Brazil website</h2>
-        <p><strong>Name:</strong> ${name}</p>
+        <h2>Novo contato pelo site</h2>
+        <p><strong>Nome:</strong> ${name}</p>
         <p><strong>E-mail:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
+        <p><strong>Mensagem:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
       `,
     });
